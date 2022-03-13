@@ -2,6 +2,7 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 import datetime as DT
+import sys
 import plotly
 
 class querySplitter:
@@ -284,3 +285,22 @@ class metaData:
         Returns a list of featues
         """
         return list(self.df.index)
+
+########################################################################################################
+########################################################################################################
+class amountSym(querySym):
+    """
+    Class that inherits from querySym and simply allows for absolute quantification of given amount of shares
+    """
+    def __init__(self, ss_df, sym, norm = True, num_shares = None):
+        super().__init__(self, ss_df, sym, norm)
+        if num_shares:
+            self.num_shares = num_shares
+        else:
+            sys.exit("Must define number of shares")
+
+    def _multiply_values(self):
+        """
+        This function simply multiplies the values by the number of shares
+        """
+        self.df = self.df * self.num_shares
